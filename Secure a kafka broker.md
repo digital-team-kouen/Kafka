@@ -59,11 +59,22 @@ sleep 3
 ```
 kafka-console-producer.sh --bootstrap-server gsb-lake-prd-mq01:9092  --topic mymo-eslip-transaction
 
-vi /data/kafkadata/kafka-bin/config/kafka-console-producer.sh
+#### Producer
+vi /data/kafkadata/kafka-bin/config/producer.properties
 
 sasl.mechanism=SCRAM-SHA-512
 security.protocol=SASL_PLAINTEXT
 
 kafka-console-producer.sh --broker-list gsb-lake-prd-mq01:9092 --topic mymo-eslip-transaction --producer.config=/data/kafkadata/kafka-bin/config/producer.properties
+
+#### Consumer
+vi /data/kafkadata/kafka-bin/config/consumer.properties
+sasl.mechanism=SCRAM-SHA-512
+security.protocol=SASL_PLAINTEXT
+
+/data/kafkadata/kafka-bin/bin/kafka-console-consumer.sh --bootstrap-server drc2mymo2perfkafka01:9092  --topic test --consumer.config=/data/kafkadata/kafka-bin/config/consumer.properties --from-beginning
+
+#### Create Topic
+/data/kafkadata/kafka-bin/bin/kafka-topics.sh --create --zookeeper drc2mymo2perfkafka01:2181 --replication-factor 3 --partitions 3 --topic test
 ```
 
