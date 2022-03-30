@@ -49,3 +49,25 @@
     ```
 
     - all topic use = ".*"
+
+- ### Increse Topic Replication Factor
+    1. Specify the extra replicas in a custom reassignment json file
+    ```shell
+    vi increase-replication-factor.json
+    ```
+    ```shell
+    {"version":1,
+        "partitions":[
+            {"topic":"<topic>","partition":0,"replicas":[0,1,2]},
+            {"topic":"<topic>","partition":1,"replicas":[0,1,2]},
+            {"topic":"<topic>","partition":2,"replicas":[0,1,2]}
+    ]}
+    ```
+    2. Use the file with the --execute option of the kafka-reassign-partitions tool
+    ```shell
+    kafka-reassign-partitions.sh --zookeeper localhost:2181 --reassignment-json-file increase-replication-factor.json --execute
+    ```
+    3. Verify the replication factor with the kafka-topics tool
+    ```shell
+    kafka-topics.sh --zookeeper localhost:2181 --topic <topic> --describe
+    ```
